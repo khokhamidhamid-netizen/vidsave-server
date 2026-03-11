@@ -3,33 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محمل فيديوهات يوتيوب</title>
+    <title>حفظ الفيديوهات</title>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f9; margin: 0; }
-        .container { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 400px; }
-        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        button { background-color: #ff0000; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 400px; }
+        h2 { color: #1c1e21; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+        button { width: 100%; padding: 12px; background-color: #ff0000; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: bold; transition: background 0.3s; }
         button:hover { background-color: #cc0000; }
+        #status { margin-top: 15px; font-size: 14px; color: #606770; }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>تحميل فيديو يوتيوب 🎥</h2>
-        <input type="text" id="videoUrl" placeholder="ضع رابط الفيديو هنا...">
+        <input type="text" id="videoUrl" placeholder="ضع رابط الفيديو هنا">
         <button onclick="downloadVideo()">تحميل الآن</button>
         <p id="status"></p>
     </div>
 
     <script>
-        function downloadVideo() {
-            const url = document.getElementById('videoUrl').value;
+        async function downloadVideo() {
+            const urlInput = document.getElementById('videoUrl');
+            const status = document.getElementById('status');
+            const url = urlInput.value;
+
             if (!url) {
-                alert("يرجى وضع رابط أولاً!");
+                alert('يرجى لصق رابط الفيديو أولاً');
                 return;
             }
-            document.getElementById('status').innerText = "جاري التحضير...";
-            // توجيه المستخدم لرابط التحميل في السيرفر
-            window.location.href = `/download?url=${encodeURIComponent(url)}`;
+            
+            status.innerText = "جاري تحضير رابط التحميل...";
+            
+            try {
+                // طلب الرابط من السيرفر الخاص بك
+                const response = await fetch(`/download?url=${encodeURIComponent(url)}`);
+                const data = await response.json();
+                
+                if (data.url) {
+                    status.innerText = "تم بنجاح! سيبدأ التحميل الآن...";
+                    // توجيه المتصفح لفتح رابط الفيديو المباشر لبدء التحميل
+                    window.location.href = data.url; 
+                } else {
+                    status.innerText = "عذراً، تعذر العثور على الفيديو.";
+                }
+            } catch (e) {
+                status.innerText = "حدث خطأ في الاتصال بالسيرفر.";
+                console.error(e);
+            }
         }
     </script>
 </body>
