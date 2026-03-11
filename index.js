@@ -1,8 +1,12 @@
-app.get('/download', async (req, res) => {
-    const videoURL = req.query.url;
-    if (!videoURL) return res.status(400).json({ error: 'No URL' });
+const express = require('express');
+const path = require('path');
+const app = express();
 
-    // سنستخدم محرك بحث مفتوح لا يحتاج شهادات معقدة
-    const finalUrl = `https://save-from.net/api/convert?url=${encodeURIComponent(videoURL)}`;
-    res.json({ url: finalUrl });
+app.use(express.static(__dirname));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
+
+// هذا السطر مهم جداً لكي يعمل الموقع على Vercel
+module.exports = app;
