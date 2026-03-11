@@ -7,8 +7,8 @@
     <style>
         body { font-family: sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 400px; }
-        h2 { color: #1c1e21; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        h2 { color: #1c1e21; }
+        input { width: 100%; padding: 12px; margin: 20px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; text-align: left; dir: ltr; }
         button { width: 100%; padding: 12px; background-color: #ff0000; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
         #status { margin-top: 15px; color: #606770; font-size: 14px; }
     </style>
@@ -23,30 +23,29 @@
 
     <script>
         function downloadVideo() {
-            const urlInput = document.getElementById('videoUrl').value;
+            let url = document.getElementById('videoUrl').value;
             const status = document.getElementById('status');
 
-            if (!urlInput) {
+            if (!url) {
                 alert('يرجى لصق الرابط أولاً');
                 return;
             }
             
-            status.innerText = "جاري فتح صفحة التحميل...";
+            status.innerText = "جاري التحويل... فضلاً انتظر";
             
-            // استخراج ID الفيديو لضمان عمل الرابط بشكل صحيح
-            const videoId = extractId(urlInput);
-            const finalLink = "https://www.y2mate.com/youtube/" + videoId;
+            // هذا الرابط هو الأضمن لتجاوز خطأ 404
+            const downloadLink = "https://www.ssyoutube.com/watch?v=" + extractVideoId(url);
             
             setTimeout(() => {
-                window.open(finalLink, '_blank');
-                status.innerText = "تمت العملية بنجاح!";
+                window.location.href = downloadLink;
+                status.innerText = "اكتمل! سيفتح التحميل الآن.";
             }, 1000);
         }
 
-        function extractId(url) {
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        function extractVideoId(url) {
+            const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
             const match = url.match(regExp);
-            return (match && match[2].length == 11) ? match[2] : url;
+            return (match && match[7].length == 11) ? match[7] : url;
         }
     </script>
 </body>
