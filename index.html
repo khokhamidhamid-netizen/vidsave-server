@@ -3,46 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vidsave | تحميل مباشر</title>
+    <title>Vidsave Pro | Ali Tabet</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #1a1a1a; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .container { background: #2d2d2d; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; width: 90%; max-width: 500px; }
-        input { width: 100%; padding: 12px; margin: 20px 0; border: none; border-radius: 8px; box-sizing: border-box; background: #404040; color: white; text-align: center; }
-        button { width: 100%; padding: 12px; background: #e50914; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
-        #resultArea { margin-top: 20px; display: none; background: #3d3d3d; padding: 15px; border-radius: 10px; }
-        .download-btn { display: inline-block; padding: 10px 20px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; margin: 10px; font-weight: bold; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #121212; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { background: #1e1e1e; padding: 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center; width: 90%; max-width: 450px; border: 1px solid #333; }
+        h2 { color: #ff0000; margin-bottom: 5px; }
+        .footer { font-size: 12px; color: #777; margin-bottom: 20px; }
+        input { width: 100%; padding: 15px; margin: 20px 0; border: 1px solid #333; border-radius: 10px; background: #252525; color: white; text-align: center; outline: none; }
+        button { width: 100%; padding: 15px; background: #ff0000; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s; }
+        button:hover { background: #cc0000; transform: scale(1.02); }
+        #resultArea { margin-top: 25px; display: none; background: #252525; padding: 15px; border-radius: 12px; border: 1px dashed #444; }
+        iframe { width: 100%; border: none; border-radius: 8px; background: white; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Vidsave Pro 🎥</h2>
-        <p>التحميل المباشر من موقعك الخاص</p>
-        <input type="text" id="videoUrl" placeholder="الصق رابط يوتيوب هنا">
-        <button onclick="fetchDownload()">استخراج روابط التحميل</button>
+        <h2>🎥 Vidsave Pro</h2>
+        <div class="footer">تطوير المبرمج علي تابت</div>
+        
+        <input type="text" id="videoUrl" placeholder="ضع رابط الفيديو هنا">
+        <button onclick="startDownload()">استخراج روابط التحميل</button>
         
         <div id="resultArea">
-            <p>تم العثور على الفيديو! اختر الجودة:</p>
-            <div id="links"></div>
+            <p style="margin-bottom: 15px; font-size: 14px;">اختر الجودة المطلوبة للتحميل:</p>
+            <div id="loader"></div>
         </div>
     </div>
 
     <script>
-        function fetchDownload() {
+        function startDownload() {
             const url = document.getElementById('videoUrl').value;
             const resultArea = document.getElementById('resultArea');
-            const linksDiv = document.getElementById('links');
+            const loader = document.getElementById('loader');
 
-            if (!url) return alert("يرجى وضع الرابط");
+            if (!url) return alert("يرجى وضع الرابط أولاً");
 
-            linksDiv.innerHTML = "جاري جلب الروابط...";
             resultArea.style.display = "block";
-
-            // استخدام محرك API خارجي لجلب الروابط لداخل صفحتك
-            const apiLink = `https://api.boxentriq.com/youtube/info?url=${encodeURIComponent(url)}`;
-
-            // ملاحظة: هذه الطريقة تجعل المستخدم يرى الأزرار في موقعك
-            // سنقوم هنا بفتح المحرك في إطار صغير (iframe) ليبقى داخل موقعك
-            linksDiv.innerHTML = `<iframe src="https://button.y2mate.com/api/button/videodownload?url=${url}" width="100%" height="150px" frameborder="0" scrolling="no"></iframe>`;
+            // استخدام محرك متوافق جداً مع Iframe لضمان الظهور
+            const cleanUrl = url.split('&')[0];
+            loader.innerHTML = `<iframe src="https://shsec.online?url=${encodeURIComponent(cleanUrl)}" width="100%" height="200px"></iframe>`;
         }
     </script>
 </body>
