@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>حفظ الفيديوهات</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        body { font-family: sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 400px; }
-        h2 { color: #1c1e21; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
-        button { width: 100%; padding: 12px; background-color: #ff0000; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: bold; transition: background 0.3s; }
-        button:hover { background-color: #cc0000; }
-        #status { margin-top: 15px; font-size: 14px; color: #606770; }
+        h2 { color: #1c1e21; }
+        input { width: 100%; padding: 12px; margin: 20px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background-color: #ff0000; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        #status { margin-top: 15px; color: #606770; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -23,34 +22,23 @@
     </div>
 
     <script>
-        async function downloadVideo() {
-            const urlInput = document.getElementById('videoUrl');
+        function downloadVideo() {
+            const url = document.getElementById('videoUrl').value;
             const status = document.getElementById('status');
-            const url = urlInput.value;
 
             if (!url) {
-                alert('يرجى لصق رابط الفيديو أولاً');
+                alert('يرجى لصق الرابط أولاً');
                 return;
             }
             
-            status.innerText = "جاري تحضير رابط التحميل...";
+            status.innerText = "جاري تحويلك لصفحة التحميل...";
             
-            try {
-                // طلب الرابط من السيرفر الخاص بك
-                const response = await fetch(`/download?url=${encodeURIComponent(url)}`);
-                const data = await response.json();
-                
-                if (data.url) {
-                    status.innerText = "تم بنجاح! سيبدأ التحميل الآن...";
-                    // توجيه المتصفح لفتح رابط الفيديو المباشر لبدء التحميل
-                    window.location.href = data.url; 
-                } else {
-                    status.innerText = "عذراً، تعذر العثور على الفيديو.";
-                }
-            } catch (e) {
-                status.innerText = "حدث خطأ في الاتصال بالسيرفر.";
-                console.error(e);
-            }
+            // هذا الرابط هو المحرك العالمي المستقر
+            const downloadLink = "https://en.savefrom.net/187/#url=" + encodeURIComponent(url);
+            
+            setTimeout(() => {
+                window.location.href = downloadLink;
+            }, 1000);
         }
     </script>
 </body>
