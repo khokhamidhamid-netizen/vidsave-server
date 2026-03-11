@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محمل فيديوهات يوتيوب</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f9; margin: 0; }
+        .container { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 400px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { background-color: #ff0000; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; }
+        button:hover { background-color: #cc0000; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>تحميل فيديو يوتيوب 🎥</h2>
+        <input type="text" id="videoUrl" placeholder="ضع رابط الفيديو هنا...">
+        <button onclick="downloadVideo()">تحميل الآن</button>
+        <p id="status"></p>
+    </div>
+
+    <script>
+        function downloadVideo() {
+            const url = document.getElementById('videoUrl').value;
+            if (!url) {
+                alert("يرجى وضع رابط أولاً!");
+                return;
+            }
+            document.getElementById('status').innerText = "جاري التحضير...";
+            // توجيه المستخدم لرابط التحميل في السيرفر
+            window.location.href = `/download?url=${encodeURIComponent(url)}`;
+        }
+    </script>
+</body>
+</html>
