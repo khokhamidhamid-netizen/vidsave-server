@@ -3,49 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حفظ الفيديوهات</title>
+    <title>Vidsave | تحميل مباشر</title>
     <style>
-        body { font-family: sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 400px; }
-        h2 { color: #1c1e21; }
-        input { width: 100%; padding: 12px; margin: 20px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; text-align: left; dir: ltr; }
-        button { width: 100%; padding: 12px; background-color: #ff0000; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        #status { margin-top: 15px; color: #606770; font-size: 14px; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #1a1a1a; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { background: #2d2d2d; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; width: 90%; max-width: 500px; }
+        input { width: 100%; padding: 12px; margin: 20px 0; border: none; border-radius: 8px; box-sizing: border-box; background: #404040; color: white; text-align: center; }
+        button { width: 100%; padding: 12px; background: #e50914; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        #resultArea { margin-top: 20px; display: none; background: #3d3d3d; padding: 15px; border-radius: 10px; }
+        .download-btn { display: inline-block; padding: 10px 20px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; margin: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>تحميل فيديو يوتيوب 🎥</h2>
-        <input type="text" id="videoUrl" placeholder="ضع رابط الفيديو هنا">
-        <button onclick="downloadVideo()">تحميل الآن</button>
-        <p id="status"></p>
+        <h2>Vidsave Pro 🎥</h2>
+        <p>التحميل المباشر من موقعك الخاص</p>
+        <input type="text" id="videoUrl" placeholder="الصق رابط يوتيوب هنا">
+        <button onclick="fetchDownload()">استخراج روابط التحميل</button>
+        
+        <div id="resultArea">
+            <p>تم العثور على الفيديو! اختر الجودة:</p>
+            <div id="links"></div>
+        </div>
     </div>
 
     <script>
-        function downloadVideo() {
-            let url = document.getElementById('videoUrl').value;
-            const status = document.getElementById('status');
+        function fetchDownload() {
+            const url = document.getElementById('videoUrl').value;
+            const resultArea = document.getElementById('resultArea');
+            const linksDiv = document.getElementById('links');
 
-            if (!url) {
-                alert('يرجى لصق الرابط أولاً');
-                return;
-            }
-            
-            status.innerText = "جاري التحويل... فضلاً انتظر";
-            
-            // هذا الرابط هو الأضمن لتجاوز خطأ 404
-            const downloadLink = "https://www.ssyoutube.com/watch?v=" + extractVideoId(url);
-            
-            setTimeout(() => {
-                window.location.href = downloadLink;
-                status.innerText = "اكتمل! سيفتح التحميل الآن.";
-            }, 1000);
-        }
+            if (!url) return alert("يرجى وضع الرابط");
 
-        function extractVideoId(url) {
-            const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[7].length == 11) ? match[7] : url;
+            linksDiv.innerHTML = "جاري جلب الروابط...";
+            resultArea.style.display = "block";
+
+            // استخدام محرك API خارجي لجلب الروابط لداخل صفحتك
+            const apiLink = `https://api.boxentriq.com/youtube/info?url=${encodeURIComponent(url)}`;
+
+            // ملاحظة: هذه الطريقة تجعل المستخدم يرى الأزرار في موقعك
+            // سنقوم هنا بفتح المحرك في إطار صغير (iframe) ليبقى داخل موقعك
+            linksDiv.innerHTML = `<iframe src="https://button.y2mate.com/api/button/videodownload?url=${url}" width="100%" height="150px" frameborder="0" scrolling="no"></iframe>`;
         }
     </script>
 </body>
